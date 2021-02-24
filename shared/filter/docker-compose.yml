@@ -1,0 +1,35 @@
+version: "3"
+services:
+  db-filter:
+    image: postgres
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024k"
+        max-file: "10"
+    environment:
+      - UO_INSTANCE
+      - UO_BROKER_AMQP_HOST
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_PORT
+      - UO_DATA_HOST
+      - UO_DB_HOST
+      - UO_DB_PORT
+      - UO_DB_USER
+      - UO_DB_PASS
+      - UO_DB_NAME
+    volumes:
+      - ./:/app:rw
+    networks:
+      - timescaledb
+    entrypoint:
+      - /bin/bash
+      - -c
+      - chmod +x /app/sql-filter.sh && /app/sql-filter.sh
+
+networks:
+  timescaledb:
+    external:
+      name: ${UO_INSTANCE}_timescaledb

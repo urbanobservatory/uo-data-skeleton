@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  backup:
+    container_name: ${UO_INSTANCE}-backup
+    image: aarepuu/backup-scheduler
+    restart: unless-stopped
+    environment:
+      TYPE: ${DB_TYPE}
+      DB_HOST: ${UO_DB_HOST}
+      DB_NAME: ${UO_DB_NAME}
+      DB_USER: ${UO_DB_USER}
+      DB_PASS: ${UO_DB_PASS}
+      DIFF_SCHEDULE: ${DB_DIFF_SCHEDULE}
+    volumes:
+      - ${BACKUP_DIR}/${UO_INSTANCE}/data:/data
+      - ${BACKUP_DIR}/${UO_INSTANCE}/cache:/cache
+    expose:
+      - "80"
+    ports:
+      - 127.0.0.1:${DB_BACKUP_MONITOR_PORT}:80
+    networks:
+      - timescaledb
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024k"
+        max-file: "10"
+
+networks:
+  timescaledb:
+    external:
+      name: ${UO_DB_HOST}

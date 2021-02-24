@@ -1,0 +1,20 @@
+version: "3"
+services:
+  nginx:
+    container_name: ${UO_INSTANCE}-fileservice
+    image: nginx
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024k"
+        max-file: "10"
+    networks:
+      - nginx
+    ports:
+      - 80:80
+    volumes:
+      - ${FILE_SERVICE_DIR}:/usr/share/nginx/html:ro
+
+networks:
+  nginx:

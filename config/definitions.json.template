@@ -1,0 +1,135 @@
+{
+  "rabbit_version": "3.8.0",
+  "users": [
+    {
+      "name": "broker",
+      "password_hash": "UO_BROKER_AMQP_PASSWORD",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": ""
+    },
+    {
+      "name": "store",
+      "password_hash": "UO_MASTER_BROKER_AMQP_PASSWORD",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": ""
+    },
+    {
+      "name": "stream",
+      "password_hash": "UO_STREAM_AMQP_PASSWORD",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": ""
+    },
+    {
+      "name": "uo",
+      "password_hash": "RABBITMQ_ADMIN_PASSWORD",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": "administrator"
+    }
+  ],
+  "vhosts": [
+    {
+      "name": "/"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "uo",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "broker",
+      "vhost": "/",
+      "configure": "",
+      "write": ".*",
+      "read": ""
+    },
+    {
+      "user": "store",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "stream",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "topic_permissions": [],
+  "parameters": [],
+  "global_parameters": [
+    {
+      "name": "cluster_name",
+      "value": "uo@UO_HOST"
+    }
+  ],
+  "policies": [],
+  "queues": [
+    {
+      "name": "uo.master.stream",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "uo.master.store",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "uo.stream",
+      "vhost": "/",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "uo.raw",
+      "vhost": "/",
+      "type": "fanout",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    }
+  ],
+  "bindings": [
+    {
+      "source": "uo.raw",
+      "vhost": "/",
+      "destination": "uo.master.store",
+      "destination_type": "queue",
+      "routing_key": "",
+      "arguments": {}
+    },
+    {
+      "source": "uo.raw",
+      "vhost": "/",
+      "destination": "uo.master.stream",
+      "destination_type": "queue",
+      "routing_key": "",
+      "arguments": {}
+    },
+    {
+      "source": "uo.stream",
+      "vhost": "/",
+      "destination": "uo.master.stream",
+      "destination_type": "queue",
+      "routing_key": "",
+      "arguments": {}
+    }
+  ]
+}
