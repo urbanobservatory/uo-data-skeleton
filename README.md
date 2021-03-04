@@ -114,7 +114,7 @@ cp config/instance.env.example config/${UO-INSTANCE}.env
 ### DB service:
 
 ```bash
-./db-service.sh ${UO-INSTANCE} start [docker-compose options]
+./db-services.sh ${UO-INSTANCE} start [docker-compose options]
 ```
 
 ### Queue services:
