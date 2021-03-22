@@ -114,7 +114,7 @@ cp config/instance.env.example config/${UO-INSTANCE}.env
 ### DB service:
 
 ```bash
-./db-services.sh ${UO-INSTANCE} start [docker-compose options]
+./db-service.sh ${UO-INSTANCE} start [docker-compose options]
 ```
 
 ### Queue services:
@@ -122,7 +122,7 @@ cp config/instance.env.example config/${UO-INSTANCE}.env
 > **NOTE!** Queue services use [RabbitMQ](https://www.rabbitmq.com/) configuration from `definitions.json` which is injected with passwords from `.env` variables on service startup and copied to `uo-data-box` codebase next to rabbitmq compose file. See the template configuration in [/config](/config). Also make sure to check if exposed `ports` are not already taken on host before running.
 
 ```bash
-./queue-service.sh ${UO-INSTANCE} start [docker-compose options]
+./queue-services.sh ${UO-INSTANCE} start [docker-compose options]
 ```
 
 ### Data services:
@@ -202,8 +202,8 @@ mkdir -p /srv/backup/${UO-INSTANCE}/cache # add diff cache location
 
 ```bash
 # table=restore normal tables, data=restore data (hyper) tables
-# filespath is the location of backup files
-./restore-data.sh ${UO-INSTANCE} {tables|data} filespath
+# filespath is the location of backup files (for folder /* is needed)
+./restore-data.sh ${UO-INSTANCE} {tables|data|temp} filespath
 # also creates a logfile (in the same directory) of fails when restoring files
 ```
 
